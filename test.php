@@ -1,8 +1,3 @@
-# ADJEMINPAY PHP SDK
-
-
-## Using case
-```php
 <?php
 
 use AdjeminPay\AdjeminPay;
@@ -109,5 +104,3 @@ $transaction->paid_at;
 echo $adjeminPay->canceledAt();
 //or
 $transaction->canceled_at;
-
-```

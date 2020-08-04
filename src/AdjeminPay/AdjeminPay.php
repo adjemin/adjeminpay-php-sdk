@@ -5,7 +5,7 @@ namespace AdjeminPay;
 use GuzzleHttp\Client;
 
 /**
- * SDK Class
+ * AdjeminPay Class
  * 
  * @version 1.0.0
  */
