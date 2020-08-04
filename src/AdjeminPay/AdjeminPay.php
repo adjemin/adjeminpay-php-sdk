@@ -25,7 +25,7 @@ class AdjeminPay{
     /**
      * @var array $data All information about the application or transaction
      */
-    private $data;
+    public $data;
     
     /**
      * @var string $token Access token
@@ -97,7 +97,7 @@ class AdjeminPay{
      * 
      * @throws \Exception 
      */
-    private function retrieveData(){
+    public function retrieveData(){
         try {
             $this->checkAvailable();
         } catch (\Exception $exception) {
@@ -230,24 +230,6 @@ class AdjeminPay{
     }
 
 
-    /**
-     * Get success_meta_data
-     * 
-     * @return bool isApprouved transaction
-     */
-    public function isApprouved(){
-        return $this->response['is_approuved'] == 0 ? false : true;
-    }
-
-
-    /**
-     * Get is_paid
-     * 
-     * @return bool isPaid transaction
-     */
-    public function isPaid(){
-        return $this->response['is_paid'] == 0 ? false : true;
-    }
 
     /**
      * Get paid_at
