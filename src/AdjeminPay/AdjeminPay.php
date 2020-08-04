@@ -3,6 +3,7 @@
 namespace AdjeminPay;
 
 use GuzzleHttp\Client;
+use AdjeminPay\Transaction;
 
 /**
  * AdjeminPay Class
@@ -331,7 +332,7 @@ class AdjeminPay{
                 
                 $this->response = (array) json_decode($body, true);
 
-                return $this->response;
+                return new Transaction($this->response);
             } catch (\Exception $exception) {
                 throw new Exception($exception->getMessage(), $exception->getCode());
             }

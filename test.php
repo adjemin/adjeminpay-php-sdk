@@ -10,7 +10,7 @@ $adjeminPay = new AdjeminPay('91244f3a-617c-4026-b0f1-ad3711ef4f43', 'un6LeSil4N
 
 //get transaction by reference
 /** @var Transaction $transaction Transaction*/
-$transaction = new Transaction($adjeminPay->getTransanctionByReference("ADJEMIN_ORDER_016953_008190"));
+$transaction = $adjeminPay->getTransanctionByReference("ADJEMIN_ORDER_016953_008190");
 var_dump($transaction);
 
 
