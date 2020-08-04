@@ -1,5 +1,7 @@
 # ADJEMINPAY PHP SDK
 
+
+## Using case
 ```php
 <?php
 
