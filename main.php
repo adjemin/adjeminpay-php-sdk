@@ -1,6 +1,3 @@
-# adjeminpay-php-sdk
-
-```php
 <?php
 
 //copy credrential from adjeminpay.com
@@ -58,4 +55,3 @@ echo $sdk->isPaid();
 
 //PAID_AT
 echo $sdk->getAmount();
-```

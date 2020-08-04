@@ -1,0 +1,32 @@
+{
+    "name": "AdjeminPay/php-sdk",
+    "description": "The sdk for Adjemin pay transaction",
+    "keywords": [
+        "AdjeminPay",
+        "api",
+        "sdk",
+        "php",
+        "integration"
+    ],
+    "homepage": "https://gitlab.com/adjeminpay/adjeminpay-sdk",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Adjemin and contributors"
+        }
+    ],
+    "require": {
+        "php" : ">=5.6.0",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "support": {
+        "email": "dev@adjemin.com"
+    },
+    "minimum-stability": "stable",
+    "autoload-dev": {
+        "psr-4": {
+            "SDK": "src/AdjeminPay/AdjeminPay"
+        }
+    }
+}
