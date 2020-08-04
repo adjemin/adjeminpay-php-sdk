@@ -77,6 +77,9 @@ class Transaction
      */
     public $is_successfull;
 
+    /**
+     * Class constructor
+     */
     public function __construct(array $data){
         $this->amount =  $data['amount'];
         $this->reference = $data['reference'];
