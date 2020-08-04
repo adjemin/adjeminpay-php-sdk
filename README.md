@@ -1,4 +1,4 @@
-# ADJEMINPAY PHP SDK
+# AdjeminPay PHP SDK
 
 
 ## Using case
