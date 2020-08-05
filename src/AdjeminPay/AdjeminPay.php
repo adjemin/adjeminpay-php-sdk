@@ -4,6 +4,10 @@ namespace AdjeminPay;
 
 use GuzzleHttp\Client;
 use AdjeminPay\Transaction;
+use AdjeminPay\Exception\AdjeminPayException;
+use AdjeminPay\Exception\AdjeminPayBadRequest;
+use AdjeminPay\Exception\AdjeminPayHTTPException;
+use AdjeminPay\Exception\AdjeminPayConnexionException;
 
 /**
  * AdjeminPay Class
@@ -47,7 +51,10 @@ class AdjeminPay{
      * @param string $application_id
      * @param string $apikey
      * 
-     * @throws \Exception 
+     * @throws AdjeminPayException
+     * @throws AdjeminPayBadRequest
+     * @throws AdjeminPayHTTPException
+     * @throws AdjeminPayConnexionException 
      */
     public function __construct($application_id, $apikey){
         $this->application_id = $application_id;
@@ -60,7 +67,9 @@ class AdjeminPay{
     /**
      * Cheick is ApplicationID and Apikey are available
      * 
-     * @throws \Exception 
+     * @throws AdjeminPayException
+     * @throws AdjeminPayHTTPException
+     * @throws AdjeminPayConnexionException
      */
     private function checkAvailable(){
         $request = new Client();
@@ -79,14 +88,14 @@ class AdjeminPay{
                 $this->data = $json['data']['data'];
                 $this->token  = $json['data']['token'];
             } catch (\Exception $exception) {
-               throw new \Exception("Access denied", 404);
+               throw new AdjeminPayConnexionException("Access denied", 404);
             }
 
             if(empty($this->data)){
-                throw new \Exception("Access denied", 404);
+                throw new AdjeminPayException("Access denied", 404);
             }
         }else{
-            throw new Exception("Unauthorized", 401);
+            throw new AdjeminPayHTTPException("Unauthorized", 401);
         }
     }
 
@@ -96,19 +105,20 @@ class AdjeminPay{
      * 
      * @return array $data
      * 
-     * @throws \Exception 
+     * @throws AdjeminPayException
+     * @throws AdjeminPayBadRequest 
      */
     public function retrieveData(){
         try {
             $this->checkAvailable();
         } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage(), $exception->getCode());
+            throw new AdjeminPayException($exception->getMessage(), $exception->getCode());
         }
 
         if(!empty($this->data['application'])){
             return $this->data;
         }else{
-            throw new \Exception("Sorry, No data found", 500);
+            throw new AdjeminPayBadRequest("Sorry, No data found", 500);
         }
     }
 
@@ -122,15 +132,6 @@ class AdjeminPay{
         return $this->response['amount'];
     }
 
-
-    /**
-     * Get items
-     * 
-     * @return string Items of the transaction
-     */
-    public function getItems(){
-        return $this->response['items'];
-    }
 
 
     /**
@@ -244,50 +245,11 @@ class AdjeminPay{
     /**
      * Get canceled_at
      * 
-     * @return bool canceledAt transaction
+     * @return string canceledAt transaction
      */
     public function canceledAt(){
         return $this->response['canceled_at'];
     }
-
-    /**
-     * Get approuved_at
-     * 
-     * @return bool approuvedAt transaction
-     */
-    public function approuvedAt(){
-        return $this->response['approuved_at'];
-    }
-
-    /**
-     * Get notify url
-     * 
-     * @return string Notify url
-     */
-    public function getNotifyUrl(){
-        return $this->data['notify_url'];
-    }
-
-
-    /**
-     * Get cancel url
-     * 
-     * @return string Cancel url
-     */
-    public function getCancelUrl(){
-        return $this->data['cancel_url'];
-    }
-
-
-    /**
-     * Get return url
-     * 
-     * @return string Return url
-     */
-    public function getReturnUrl(){
-        return $this->data['return_url'];
-    }
-
 
 
     /**
@@ -297,18 +259,20 @@ class AdjeminPay{
      * 
      * @return array Transaction
      * 
-     * @throws \Exception
+     * @throws AdjeminPayException
+     * @throws AdjeminPayBadRequest
+     * @throws AdjeminPayHTTPException
      */
     public function getTransanctionByReference(string $reference){
         
         try {
             $this->checkAvailable();
         } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage(), $exception->getCode());
+            throw new AdjeminPayException($exception->getMessage(), $exception->getCode());
         }
 
         if(empty($reference)){
-            throw new Exception("Bad parameter pass to function ", 400);
+            throw new AdjeminPayBadRequest("Bad parameter pass to function ", 400);
         }
         
         $request = new Client();
@@ -334,10 +298,10 @@ class AdjeminPay{
 
                 return new Transaction($this->response);
             } catch (\Exception $exception) {
-                throw new Exception($exception->getMessage(), $exception->getCode());
+                throw new AdjeminPayException($exception->getMessage(), $exception->getCode());
             }
         }else{
-            throw new Exception($exception->getMessage(), $exception->getCode());
+            throw new AdjeminPayHTTPException($exception->getMessage(), $exception->getCode());
         }
     }
 }
