@@ -2,6 +2,7 @@
 
 namespace AdjeminPay;
 
+use AdjeminPay\Exception\AdjeminPayBadRequest;
 
 /**
  * Transaction Class
@@ -77,10 +78,12 @@ class Transaction
      */
     public $is_successfull;
 
+    const STATUS = ['INITIATED','PENDING', 'EXPIRED', 'CANCELLED', 'SUCCESS', 'FAILED']; 
+
     /**
      * Class constructor
      */
-    public function __construct(array $data){
+    public function __construct(array $data = []){
         $this->amount =  $data['amount'];
         $this->reference = $data['reference'];
         $this->designation = $data['designation'];
@@ -96,4 +99,11 @@ class Transaction
         $this->canceled_at = $data['canceled_at'];
     }
 
+    public function setStatus(string $status){
+        if(in_array($status, self::STATUS)){
+            $this->status = $status;
+        }else{
+            throw new AdjeminPayBadRequest("Bad status code", 400);
+        }
+    }
 }
