@@ -49,9 +49,9 @@ echo $transaction->client_reference;
 
 
 //Get Transaction type
-echo $adjeminPay->getTransactionType();
+echo $adjeminPay->getProvider();
 //or
-echo $transaction->transaction_type;
+echo $transaction->provider;
 
 
 

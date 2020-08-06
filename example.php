@@ -22,7 +22,7 @@ try {
     // Verification de l'etat du traitement de la commande
     if($transaction->is_successfull){
         echo 'Bravo, votre paiement a été effectué avec succès';
-        $my_transaction->status = $transaction->status;
+        $my_transaction->setStatus($transaction->status);
         die();
     }
 
@@ -32,7 +32,7 @@ try {
             if (in_array($transaction->status, ['CANCELLED', 'EXPIRED', 'FAILED'])){
                 echo "La transaction n'as pas pu se dérouler comme prévue";
             }else{
-                $my_transaction->status = $transaction->status;
+                $my_transaction->setStatus($transaction->status);
             }
         }else{
             throw new AdjeminPayBadRequest("Tentative de fraude", 500);

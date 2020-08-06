@@ -88,7 +88,7 @@ class Transaction
         $this->reference = $data['reference'];
         $this->designation = $data['designation'];
         $this->client_reference = $data['client_reference'];
-        $this->transaction_type = $data['transaction_type'];
+        $this->provider = $data['transaction_type'];
         $this->currency_code = $data['currency_code'];
         $this->status = $data['status'];
         $this->is_pending = $data['is_pending'];
