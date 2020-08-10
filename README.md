@@ -1,5 +1,18 @@
 # AdjeminPay PHP SDK
 
+## Installer le sdk
+
+Il faut d'abord cloner le projet avec la commande :
+
+```
+git clone https://github.com/adjemin/adjeminpay-php-sdk.git
+```
+
+taper la commande suivante pour installer les dépendances dont vous aurez besoin
+
+```
+composer install
+```
 
 ## Using case
 ```php
