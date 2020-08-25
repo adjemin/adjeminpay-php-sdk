@@ -11,7 +11,7 @@ git clone https://github.com/adjemin/adjeminpay-php-sdk.git
 taper la commande suivante pour installer les dépendances dont vous aurez besoin
 
 ```
-composer install
+composer require adjeminpay/adjeminpay-php-sdk
 ```
 
 ## Use case
