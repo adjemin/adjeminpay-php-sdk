@@ -1,5 +1,5 @@
 {
-    "name": "adjeminpay/php-sdk",
+    "name": "adjeminpay/adjeminpay-php-sdk",
     "description": "SDK PHP pour suivre les notifications de transactions depuis le backend de votre site",
     "keywords": [
         "AdjeminPay",
