@@ -1,5 +1,18 @@
 # AdjeminPay PHP SDK
 
+## Installer le sdk
+
+Il faut d'abord cloner le projet avec la commande :
+
+```
+git clone https://github.com/adjemin/adjeminpay-php-sdk.git
+```
+
+taper la commande suivante pour installer les dépendances dont vous aurez besoin
+
+```
+composer install
+```
 
 ## Use case
 ```php
@@ -49,9 +62,9 @@ echo $transaction->client_reference;
 
 
 //Get Transaction type
-echo $adjeminPay->getTransactionType();
+echo $adjeminPay->getProvider();
 //or
-echo $transaction->transaction_type;
+echo $transaction->provider;
 
 
 

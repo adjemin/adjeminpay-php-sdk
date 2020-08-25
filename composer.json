@@ -26,9 +26,9 @@
         "email": "dev@adjemin.com"
     },
     "minimum-stability": "stable",
-    "autoload-dev": {
+    "autoload": {
         "psr-4": {
-            "SDK": "src/AdjeminPay/AdjeminPay"
+            "SDK\\": "src/AdjeminPay/AdjeminPay"
         }
     }
 }

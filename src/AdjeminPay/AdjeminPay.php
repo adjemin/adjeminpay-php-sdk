@@ -169,7 +169,7 @@ class AdjeminPay{
      * 
      * @return string transaction type of the transaction
      */
-    public function getTransactionType(){
+    public function getProvider(){
         return $this->response['transaction_type'];
     }
 
