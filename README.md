@@ -1,7 +1,7 @@
 # AdjeminPay PHP SDK
 
 
-## Using case
+## Use case
 ```php
 <?php
 

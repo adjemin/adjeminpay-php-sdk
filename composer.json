@@ -1,12 +1,14 @@
 {
     "name": "AdjeminPay/php-sdk",
-    "description": "The sdk for Adjemin pay transaction",
+    "description": "SDK PHP pour suivre les notifications de transactions depuis le backend de votre site",
     "keywords": [
         "AdjeminPay",
         "api",
         "sdk",
         "php",
-        "integration"
+        "integration",
+        "fintech",
+        "mobile money"
     ],
     "homepage": "https://gitlab.com/adjeminpay/adjeminpay-sdk",
     "license": "MIT",

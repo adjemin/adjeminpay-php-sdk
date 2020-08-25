@@ -88,7 +88,7 @@ class AdjeminPay{
                 $this->data = $json['data']['data'];
                 $this->token  = $json['data']['token'];
             } catch (\Exception $exception) {
-               throw new AdjeminPayConnexionException("Access denied", 404);
+                throw new AdjeminPayConnexionException("Access denied", 404);
             }
 
             if(empty($this->data)){
