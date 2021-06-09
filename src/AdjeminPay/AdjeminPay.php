@@ -159,7 +159,8 @@ class AdjeminPay implements AdjeminPayInterface {
         $response = $client->post($url, [
             "headers" => [
                 'Authorization' => 'Bearer '.$this->getAccessToken(),
-                'Accept' => 'application/json'
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded'
             ],
             "form_params" => $body
 
