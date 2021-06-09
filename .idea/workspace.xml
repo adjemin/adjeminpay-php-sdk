@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9c62c9e9-11a3-4121-857e-1e959b066522" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/adjeminpay-php-sdk.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/adjeminpay-php-sdk.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-    </list>
+    <list default="true" id="9c62c9e9-11a3-4121-857e-1e959b066522" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,6 +64,7 @@
       <workItem from="1623244653820" duration="55000" />
       <workItem from="1623244720569" duration="6172000" />
       <workItem from="1623262508838" duration="1857000" />
+      <workItem from="1623267969160" duration="261000" />
     </task>
     <servers />
   </component>

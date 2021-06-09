@@ -122,35 +122,6 @@ class Transaction
 
     const ORANGE_SUCCESS = "SUCCESS"; //Orange give success for successful transaction
 
-    public $fillable = [
-        'merchant_id',
-        'user_id',
-        'application_id',
-        'currency_code',
-        'amount',
-        'type',
-        'payment_method_id',
-        'is_waiting',
-        'is_canceled',
-        'card_provider_id',
-        'is_approuved',
-        'canceled_at',
-        'approuved_at',
-        'status',
-        'reference',
-        'designation',
-        'client_reference',
-        'reason',
-        'notif_url',
-        'error_meta_data',
-        'buyer_reference',
-        'provider_payment_id',
-        'buyer_name',
-        'payment_method_code',
-        'phone_number',
-        'is_initiated'
-    ];
-
     /**
      * Class constructor
      */
