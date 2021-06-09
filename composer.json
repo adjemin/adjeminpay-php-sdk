@@ -1,6 +1,6 @@
 {
     "name": "adjeminpay/adjeminpay-php-sdk",
-    "description": "SDK PHP pour suivre les notifications de transactions depuis le backend de votre site",
+    "description": "SDK PHP to create transaction or get transaction status",
     "keywords": [
         "AdjeminPay",
         "api",
@@ -12,7 +12,7 @@
     ],
     "homepage": "https://gitlab.com/adjeminpay/adjeminpay-sdk",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "Adjemin and contributors"
@@ -20,7 +20,8 @@
     ],
     "require": {
         "php" : ">=5.6.0",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "ext-json": "*"
     },
     "support": {
         "email": "dev@adjemin.com"

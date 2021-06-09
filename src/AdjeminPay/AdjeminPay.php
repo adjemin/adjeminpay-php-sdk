@@ -2,30 +2,28 @@
 
 namespace AdjeminPay;
 
+use AdjeminPay\Exception\AdjeminPayAuthException;
 use GuzzleHttp\Client;
-use AdjeminPay\Transaction;
 use AdjeminPay\Exception\AdjeminPayException;
-use AdjeminPay\Exception\AdjeminPayBadRequest;
-use AdjeminPay\Exception\AdjeminPayHTTPException;
-use AdjeminPay\Exception\AdjeminPayConnexionException;
 
 /**
  * AdjeminPay Class
  * 
  * @version 1.0.0
  */
-class AdjeminPay{
+class AdjeminPay implements AdjeminPayInterface {
 
-    
-    /**
-     * @var string $application_id Application identifier 
+     const API_BASE_URL = "https://api.adjeminpay.net";
+
+     /**
+     * @var string $clientId Client ID
      */
-    private $application_id;
+    private $clientId;
 
     /**
-     * @var string $apikey Key for API access
+     * @var string $clientSecret Client Secret
      */
-    private $apikey;
+    private $clientSecret;
 
     /**
      * @var array $data All information about the application or transaction
@@ -43,265 +41,204 @@ class AdjeminPay{
     private $response;
 
 
-
     /**
      * Class constructor
      * Initialize some private value and check if they are available
-     * 
-     * @param string $application_id
-     * @param string $apikey
-     * 
-     * @throws AdjeminPayException
-     * @throws AdjeminPayBadRequest
-     * @throws AdjeminPayHTTPException
-     * @throws AdjeminPayConnexionException 
+     *
+     * @param string $clientId
+     * @param string $clientSecret
+     * @throws AdjeminPayAuthException
      */
-    public function __construct($application_id, $apikey){
-        $this->application_id = $application_id;
-        $this->apikey = $apikey;
-        $this->checkAvailable();
-        $this->retrieveData();
+    public function __construct($clientId, $clientSecret){
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->token = $this->obtainAccessToken();
+    }
+
+    public function getBaseUrl()
+    {
+        return self::API_BASE_URL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientSecret()
+    {
+        return $this->clientSecret;
     }
 
 
     /**
-     * Cheick is ApplicationID and Apikey are available
-     * 
-     * @throws AdjeminPayException
-     * @throws AdjeminPayHTTPException
-     * @throws AdjeminPayConnexionException
+     * Obtain Access Token
+     * @throws AdjeminPayAuthException
      */
-    private function checkAvailable(){
-        $request = new Client();
-        $url = "https://dev.adjeminpay.adjemincloud.com/v1/checkCredential";
+    public function obtainAccessToken(){
+        $client = new Client();
+        $url = $this->getBaseUrl()."/oauth/token";
         $body = [
-            'application_id'    =>  $this->application_id,
-            'apikey'    =>  $this->apikey
+            'client_id'    =>  $this->getClientId(),
+            'client_secret' =>  $this->getClientSecret(),
+            'grant_type' => 'client_credentials'
         ];
 
-        $response = $request->post($url, ["form_params" => $body]);
+        $response = $client->post($url, [
+            "headers" => [
+                'Accept' => 'application/json',
+            ],
+            "form_params" => $body
+
+        ]);
 
         if ($response->getStatusCode() == 200){
             $body = $response->getBody()->getContents();
             $json = (array) json_decode($body, true);
-            try {
-                $this->data = $json['data']['data'];
-                $this->token  = $json['data']['token'];
-            } catch (\Exception $exception) {
-                throw new AdjeminPayConnexionException("Access denied", 404);
+
+            if(array_key_exists('access_token', $json) && !empty( $json['access_token'])){
+                return $json['access_token'];
+            }else{
+                if(array_key_exists('message', $json) && !empty( $json['message'])){
+                    $message  = $json['message'];
+                }else{
+                    $message  = "Client authentication failed";
+                }
+                throw  new AdjeminPayAuthException($message,$response->getStatusCode());
             }
 
-            if(empty($this->data)){
-                throw new AdjeminPayException("Access denied", 404);
+        }else{
+            $body = $response->getBody()->getContents();
+            $json = (array) json_decode($body, true);
+            if(array_key_exists('message', $json) && !empty( $json['message'])){
+                $message  = $json['message'];
+            }else{
+                $message  = "Client authentication failed";
             }
-        }else{
-            throw new AdjeminPayHTTPException("Unauthorized", 401);
+            throw  new AdjeminPayAuthException($message,$response->getStatusCode());
         }
     }
 
+    public function getAccessToken()
+    {
+        return $this->token;
+    }
 
     /**
-     * Get application data and all setters data
-     * 
-     * @return array $data
-     * 
      * @throws AdjeminPayException
-     * @throws AdjeminPayBadRequest 
+     * @throws AdjeminPayAuthException
      */
-    public function retrieveData(){
-        try {
-            $this->checkAvailable();
-        } catch (\Exception $exception) {
-            throw new AdjeminPayException($exception->getMessage(), $exception->getCode());
+    public function createTransaction($params)
+    {
+        if(empty($this->getAccessToken())){
+            $message = 'The requested service needs credentials, but the ones provided were invalid.';
+            throw  new AdjeminPayAuthException($message,401);
         }
 
-        if(!empty($this->data['application'])){
-            return $this->data;
-        }else{
-            throw new AdjeminPayBadRequest("Sorry, No data found", 500);
-        }
-    }
-
-
-    /**
-     * Get Amount
-     * 
-     * @return int Amount of the transaction
-     */
-    public function getAmount(){
-        return $this->response['amount'];
-    }
-
-
-
-    /**
-     * Get items
-     * 
-     * @return string reference of the transaction
-     */
-    public function getReference(){
-        return $this->response['reference'];
-    }
-
-
-    /**
-     * Get designation
-     * 
-     * @return string designation of the transaction
-     */
-    public function getDesignation(){
-        return $this->response['designation'];
-    }
-
-
-    /**
-     * Get client_reference
-     * 
-     * @return string client reference of the transaction
-     */
-    public function getClientReference(){
-        return $this->response['client_reference'];
-    }
-
-
-    /**
-     * Get transaction_type
-     * 
-     * @return string transaction type of the transaction
-     */
-    public function getProvider(){
-        return $this->response['transaction_type'];
-    }
-
-    /**
-     * Get transaction_type
-     * 
-     * @return string currency code of the transaction
-     */
-    public function getCurrencyCode(){
-        return $this->response['currency_code'];
-    }
-
-
-    /**
-     * Get status
-     * 
-     * @return string status transaction
-     */
-    public function getStatus(){
-        return $this->response['status'];
-    }
-
-    /**
-     * Get success_meta_data
-     * 
-     * @return bool isPending transaction
-     */
-    public function isPending(){
-        return $this->response['is_pending'] == 0 ? false : true;
-    }
-
-
-    /**
-     * Get success_meta_data
-     * 
-     * @return bool isBlocked transaction
-     */
-    public function isBlocked(){
-        return $this->response['is_blocked'] == 0 ? false : true;
-    }
-
-
-    /**
-     * Get success_meta_data
-     * 
-     * @return bool isCanceled transaction
-     */
-    public function isCanceled(){
-        return $this->response['is_canceled'] == 0 ? false : true;
-    }
-
-    
-    /**
-     * Get success_meta_data
-     * 
-     * @return bool isSuccessfull transaction
-     */
-    public function isSuccessfull(){
-        return $this->response['is_successfull'] == 0 ? false : true;
-    }
-
-
-
-    /**
-     * Get paid_at
-     * 
-     * @return bool paid_at transaction
-     */
-    public function paidAt(){
-        return $this->response['paid_at'];
-    }
-
-    /**
-     * Get canceled_at
-     * 
-     * @return string canceledAt transaction
-     */
-    public function canceledAt(){
-        return $this->response['canceled_at'];
-    }
-
-
-    /**
-     * Get transaction data by reference
-     * 
-     * @param string $reference
-     * 
-     * @return array Transaction
-     * 
-     * @throws AdjeminPayException
-     * @throws AdjeminPayBadRequest
-     * @throws AdjeminPayHTTPException
-     */
-    public function getTransanctionByReference(string $reference){
-        
-        try {
-            $this->checkAvailable();
-        } catch (\Exception $exception) {
-            throw new AdjeminPayException($exception->getMessage(), $exception->getCode());
-        }
-
-        if(empty($reference)){
-            throw new AdjeminPayBadRequest("Bad parameter pass to function ", 400);
-        }
-        
-        $request = new Client();
-        $url = "https://dev.adjeminpay.adjemincloud.com/v1/transactionRetrieve";
-        
-        $options = [
-            'json' =>    [
-                'reference'    =>  $reference
-            ],
-            'headers'   => [
-                'Authorization' =>  'Bearer '.$this->token['access_token'],
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
-            ]
+        $client = new Client();
+        $url = $this->getBaseUrl()."/v2/transactions";
+        $body = [
+            'merchant_transaction_id' => $params['merchant_transaction_id'],
+            'designation' => $params['designation'],
+            'buyer_name' => $params['buyer_name'],
+            'buyer_reference' => $params['buyer_reference'],
+            'notification_url' => $params['notification_url'],
+            'payment_method_reference' => $params['payment_method_reference'],
+            'amount' => intval($params['amount']),
+            'currency_code' => $params['currency_code'],
+            'otp' => array_key_exists('otp', $params)?$params['otp']:'',
         ];
 
-        $response = $request->post($url, $options);
-        if ($response->getStatusCode() == 200){
-            try {
-                $body = $response->getBody()->getContents();
-                
-                $this->response = (array) json_decode($body, true);
+        $response = $client->post($url, [
+            "headers" => [
+                'Authorization' => 'Bearer '.$this->getAccessToken(),
+                'Accept' => 'application/json'
+            ],
+            "form_params" => $body
 
-                return new Transaction($this->response);
-            } catch (\Exception $exception) {
-                throw new AdjeminPayException($exception->getMessage(), $exception->getCode());
+        ]);
+
+        $body = $response->getBody()->getContents();
+        if($response->getStatusCode() == 200){
+            $json = json_decode($body, true);
+
+            if(array_key_exists('data', $json) && !empty( $json['data'])){
+                $data = $json['data'];
+                return new Transaction($data);
+            }else{
+                $json =  json_decode($body, true);
+                if(array_key_exists('message', $json) && !empty( $json['message'])){
+                    $message  = $json['message'];
+                }else{
+                    $message  = "Payment has failed";
+                }
+                throw  new AdjeminPayException($message,$response->getStatusCode());
             }
+
         }else{
-            throw new AdjeminPayHTTPException($exception->getMessage(), $exception->getCode());
+
+            $json =  json_decode($body, true);
+            if(array_key_exists('message', $json) && !empty( $json['message'])){
+                $message  = $json['message'];
+            }else{
+                $message  = "Payment has failed";
+            }
+            throw  new AdjeminPayException($message,$response->getStatusCode());
+        }
+
+
+    }
+
+    public function getTransactionStatus($merchantTransactionId)
+    {
+        if(empty($this->getAccessToken())){
+            $message = 'The requested service needs credentials, but the ones provided were invalid.';
+            throw  new AdjeminPayAuthException($message,401);
+        }
+
+        $client = new Client();
+        $url = $this->getBaseUrl()."/v2/transactions/$merchantTransactionId";
+
+        $response = $client->get($url, [
+            "headers" => [
+                'Authorization' => 'Bearer '.$this->getAccessToken(),
+                'Accept' => 'application/json'
+            ],
+        ]);
+
+        $body = $response->getBody()->getContents();
+
+        if($response->getStatusCode() == 200){
+            $json = json_decode($body, true);
+
+            if(array_key_exists('data', $json) && !empty( $json['data'])){
+                $data = $json['data'];
+                return new Transaction($data);
+            }else{
+                $json =  json_decode($body, true);
+                if(array_key_exists('message', $json) && !empty( $json['message'])){
+                    $message  = $json['message'];
+                }else{
+                    $message  = "Payment has failed";
+                }
+                throw  new AdjeminPayException($message,$response->getStatusCode());
+            }
+
+        }else{
+
+            $json =  json_decode($body, true);
+            if(array_key_exists('message', $json) && !empty( $json['message'])){
+                $message  = $json['message'];
+            }else{
+                $message  = "Payment has failed";
+            }
+            throw  new AdjeminPayException($message,$response->getStatusCode());
         }
     }
 }

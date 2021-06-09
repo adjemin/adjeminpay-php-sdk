@@ -1,6 +1,6 @@
 # AdjeminPay PHP SDK
 
-## Installer le sdk
+## Install the sdk
 
 Il faut d'abord cloner le projet avec la commande :
 
