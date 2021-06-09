@@ -22,10 +22,9 @@ use AdjeminPay\AdjeminPay;
 use AdjeminPay\Transaction;
 
 //Create AdjeminPay instance
-$clientId = -1; //Client ID of an application created on  Merchant backoffice
-$clientSecret  = "Y4R91969G3GYKV1JKvKQaaliK95yluEWKbHKPrfj"; //Client Secret of an application created on  Merchant backoffice
+$clientId = "CLIENT_ID"; //Client ID of an application created on  Merchant backoffice
+$clientSecret  = "CLIENT_SECRET"; //Client Secret of an application created on  Merchant backoffice
 $adjeminPay = new AdjeminPay($clientId, $clientSecret);
-
 
 
 //Make Payment transaction

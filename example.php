@@ -5,12 +5,12 @@ use AdjeminPay\Transaction;
 
 try {
 
-//Create AdjeminPay instance
-    $clientId = -1; //Client ID of an application created on  Merchant backoffice
-    $clientSecret  = "Y4R91969G3GYKV1JKvKQaaliK95yluEWKbHKPrfj"; //Client Secret of an application created on  Merchant backoffice
+    //Create AdjeminPay instance
+    $clientId = "CLIENT_ID"; //Client ID of an application created on  Merchant backoffice
+    $clientSecret  = "CLIENT_SECRET"; //Client Secret of an application created on  Merchant backoffice
     $adjeminPay = new AdjeminPay($clientId, $clientSecret);
 
-//Make Payment transaction
+    //Make Payment transaction
     /** @var Transaction $transaction Transaction*/
     $transaction = $adjeminPay->createTransaction([
         'merchant_transaction_id' => 'b72e51dc-7211-4e85-a937-5372c8769d36', //required You create a merchant_transaction_id
