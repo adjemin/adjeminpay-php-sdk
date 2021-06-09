@@ -12,36 +12,45 @@ $secret = 'VOTRE_CLIENT_SECRET';
 $reference = $my_transaction->reference;
 
 try {
-    //Initialisation de AdjeminPay
-    $adjeminPay = new AdjeminPay($application, $secret);
 
-    //recupérer une transaction depuis AdjeminPay
-    /** @var Transaction $transaction Transaction */
-    $transaction = $adjeminPay->getTransanctionByReference($reference);
+//Create AdjeminPay instance
+    $clientId = -1; //Client ID of an application created on  Merchant backoffice
+    $clientSecret  = "Y4R91969G3GYKV1JKvKQaaliK95yluEWKbHKPrfj"; //Client Secret of an application created on  Merchant backoffice
+    $adjeminPay = new AdjeminPay($clientId, $clientSecret);
+
+//Make Payment transaction
+    /** @var Transaction $transaction Transaction*/
+    $transaction = $adjeminPay->createTransaction([
+        'merchant_transaction_id' => 'b72e51dc-7211-4e85-a937-5372c8769d36', //required You create a merchant_transaction_id
+        'designation' => 'Test', //required
+        'currency_code' => 'XOF', //required
+        'buyer_name' => 'Ange Bagui', //required
+        'notification_url' => 'https://adjemin.com', //required
+        'payment_method_reference' => 'MTN_CI', //required //Enum = ["MTN_CI", "ORANGE_CI"]
+        'buyer_reference' => '2250556888385', //required
+        'amount' => '10', //required
+        'otp' => '' //used when payment_method_reference is ORANGE_CI
+    ]);
 
     // Verification de l'etat du traitement de la commande
-    if($transaction->is_successfull){
+    if($transaction->status == Transaction::SUCCESSFUL){
         echo 'Bravo, votre paiement a été effectué avec succès';
         $my_transaction->setStatus($transaction->status);
         die();
     }
 
-    // Verification du montant de la transaction
-    try {
-        if($transaction->amount == $my_transaction->amount ){
-            if (in_array($transaction->status, ['CANCELLED', 'EXPIRED', 'FAILED'])){
-                echo "La transaction n'as pas pu se dérouler comme prévue";
-            }else{
-                $my_transaction->setStatus($transaction->status);
-            }
-        }else{
-            throw new AdjeminPayBadRequest("Tentative de fraude", 500);
-        }
-    } catch (\Exception $e) {
-        echo $e->getMessage();
+    //Get Transaction Status by merchant_transaction_id
+    /** @var Transaction $transaction Transaction*/
+    $transaction = $adjeminPay->getTransactionStatus('b72e51dc-7211-4e85-a937-5372c8769d36');
+    // Verification de l'etat du traitement de la commande
+    if($transaction->status == Transaction::SUCCESSFUL){
+        echo 'Bravo, votre paiement a été effectué avec succès';
+        $my_transaction->setStatus($transaction->status);
+        die();
     }
 
+
 } catch (\Exception $ex) {
-    echo $ex->getMessage;
+    echo $ex->getMessage();
     //Accès direct
 }

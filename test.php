@@ -3,10 +3,10 @@
 use AdjeminPay\AdjeminPay;
 use AdjeminPay\Transaction;
 
-//copy credrential from adjeminpay.com
-$adjeminPay = new AdjeminPay('91244f3a-617c-4026-b0f1-ad3711ef4f43', 'un6LeSil4NktKkjaYpjn4drpfb2YLMQPwJctX3uK');
-
-
+//Create AdjeminPay instance
+$clientId = -1; //Client ID of an application created on  Merchant backoffice
+$clientSecret  = "Y4R91969G3GYKV1JKvKQaaliK95yluEWKbHKPrfj"; //Client Secret of an application created on  Merchant backoffice
+$adjeminPay = new AdjeminPay($clientId, $clientSecret);
 
 //get transaction by reference
 /** @var Transaction $transaction Transaction*/
@@ -94,8 +94,7 @@ $transaction->is_successfull;
 
 
 //PAID_AT
-echo $adjeminPay->paidAt();
-//or
+
 $transaction->paid_at;
 
 

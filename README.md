@@ -47,6 +47,7 @@ var_dump($transaction);
 //Get Transaction Status by merchant_transaction_id
 /** @var Transaction $transaction Transaction*/
 $transaction = $adjeminPay->getTransactionStatus('b72e51dc-7211-4e85-a937-5372c8769d36');
+
 var_dump($transaction);
 
 
