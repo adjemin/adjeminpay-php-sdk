@@ -2,14 +2,6 @@
 
 use AdjeminPay\AdjeminPay;
 use AdjeminPay\Transaction;
-use AdjeminPay\Exception\AdjeminPayBadRequest;
-
-// previous transaction $my_transaction
-/** @var Transaction $my_transaction Transaction */
-
-$application = 'VOTRE_APPLICATION_ID';
-$secret = 'VOTRE_CLIENT_SECRET';
-$reference = $my_transaction->reference;
 
 try {
 
@@ -35,7 +27,6 @@ try {
     // Verification de l'etat du traitement de la commande
     if($transaction->status == Transaction::SUCCESSFUL){
         echo 'Bravo, votre paiement a été effectué avec succès';
-        $my_transaction->setStatus($transaction->status);
         die();
     }
 
@@ -45,7 +36,6 @@ try {
     // Verification de l'etat du traitement de la commande
     if($transaction->status == Transaction::SUCCESSFUL){
         echo 'Bravo, votre paiement a été effectué avec succès';
-        $my_transaction->setStatus($transaction->status);
         die();
     }
 
