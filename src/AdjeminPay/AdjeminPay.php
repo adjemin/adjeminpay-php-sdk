@@ -85,14 +85,15 @@ class AdjeminPay implements AdjeminPayInterface {
         $client = new Client();
         $url = $this->getBaseUrl()."/oauth/token";
         $body = [
-            'client_id'    =>  $this->getClientId(),
-            'client_secret' =>  $this->getClientSecret(),
+            'client_id' => ''.$this->getClientId(),
+            'client_secret'=> ''.$this->getClientSecret(),
             'grant_type' => 'client_credentials'
         ];
 
         $response = $client->post($url, [
             "headers" => [
                 'Accept' => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded'
             ],
             "form_params" => $body
 
