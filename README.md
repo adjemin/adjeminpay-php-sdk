@@ -1,5 +1,7 @@
 # AdjeminPay PHP SDK
+
 [![Latest Stable Version](https://poser.pugx.org/adjeminpay/adjeminpay-php-sdk/v)](//packagist.org/packages/adjeminpay/adjeminpay-php-sdk) [![Total Downloads](https://poser.pugx.org/adjeminpay/adjeminpay-php-sdk/downloads)](//packagist.org/packages/adjeminpay/adjeminpay-php-sdk) [![Latest Unstable Version](https://poser.pugx.org/adjeminpay/adjeminpay-php-sdk/v/unstable)](//packagist.org/packages/adjeminpay/adjeminpay-php-sdk) [![License](https://poser.pugx.org/adjeminpay/adjeminpay-php-sdk/license)](//packagist.org/packages/adjeminpay/adjeminpay-php-sdk)
+
 The AdjeminPay PHP SDK provides convenient access to the AdjeminPay API from
 applications written in the PHP language. It includes a pre-defined set of
 classes for API resources that initialize themselves dynamically from API
