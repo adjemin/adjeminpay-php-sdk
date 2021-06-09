@@ -1,17 +1,22 @@
 # AdjeminPay PHP SDK
 
-## Install the sdk
+[![Latest Stable Version](https://poser.pugx.org/adjemin/smartlivraison-php/v)](//packagist.org/packages/adjemin/smartlivraison-php) [![Total Downloads](https://poser.pugx.org/adjemin/smartlivraison-php/downloads)](//packagist.org/packages/adjemin/smartlivraison-php) [![Latest Unstable Version](https://poser.pugx.org/adjemin/smartlivraison-php/v/unstable)](//packagist.org/packages/adjemin/smartlivraison-php) [![License](https://poser.pugx.org/adjemin/smartlivraison-php/license)](//packagist.org/packages/adjemin/smartlivraison-php)
 
-Il faut d'abord cloner le projet avec la commande :
+The AdjeminPay PHP SDK provides convenient access to the AdjeminPay API from
+applications written in the PHP language. It includes a pre-defined set of
+classes for API resources that initialize themselves dynamically from API
+responses which makes it compatible with a wide range of versions of the AdjeminPay API
 
-```
-git clone https://github.com/adjemin/adjeminpay-php-sdk.git
-```
+## Requirements
 
-taper la commande suivante pour installer les dépendances dont vous aurez besoin
+PHP 5.6.0 and later.
 
-```
-composer require adjeminpay/adjeminpay-php-sdk
+## Composer
+
+You can install the bindings via [Composer](http://getcomposer.org/). Run the following command:
+
+```bash
+composer require adjemin/adjeminpay-php-sdk
 ```
 
 ## Use case

@@ -29,7 +29,7 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "SDK\\": "src/AdjeminPay/AdjeminPay"
+            "AdjeminPay\\": "src/AdjeminPay/"
         }
     }
 }
